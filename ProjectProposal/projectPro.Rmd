@@ -1,0 +1,22 @@
+---
+title: "project proposal"
+author: "Mehdi Khan"
+date: "October 25, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+load libraries:
+```{r}
+suppressMessages(suppressWarnings(library(dplyr))) 
+suppressMessages(suppressWarnings(library(stringr))) 
+```
+
+Load data:
+```{r}
+read.csv("https://raw.githubusercontent.com/kmehdi2017/projectProp/master/ProjectProposal/ACS_15_5YR_DP02_with_ann.csv",sep = ",",stringsAsFactors = FALSE)
+```
+
