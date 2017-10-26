@@ -13,10 +13,66 @@ load libraries:
 ```{r}
 suppressMessages(suppressWarnings(library(dplyr))) 
 suppressMessages(suppressWarnings(library(stringr))) 
+suppressMessages(suppressWarnings(library(DATA606))) 
+suppressMessages(suppressWarnings(library(psych)))
 ```
+
+#data: 
+data source: American Fact Finder, US Census Bureau, https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_15_5YR_DP02&src=pt
 
 Load data:
 ```{r}
-read.csv("https://raw.githubusercontent.com/kmehdi2017/projectProp/master/ProjectProposal/ACS_15_5YR_DP02_with_ann.csv",sep = ",",stringsAsFactors = FALSE)
+originDS <- read.csv("https://raw.githubusercontent.com/kmehdi2017/projectProp/master/ProjectProposal/ACS_15_5YR_DP02_with_ann.csv",sep = ",",stringsAsFactors = FALSE)
 ```
+
+The original data contains a lot of variable which are not relevant to this project, therefore a subset of the data is extracted. The following are the variables that are selected for the project and described below:
+
+HC01_VC03:	Estimate; Total households	
+HC01_VC04:	Estimate; Total households - Family households (families)	
+HC01_VC06:	Estimate; Total households - Family households (families) - Married-couple family										
+HC01_VC08:	Estimate; Total households - Family households (families) - Male householder, no wife present	
+HC01_VC10:	Estimate; Total households - Family households (families) - Female householder, no husband present 
+HC01_VC12:	Estimate; Total households - Nonfamily households		
+HC01_VC13:	Estimate; Total households - Nonfamily households - Householder living alone	
+HC01_VC21:	Estimate;  Average household size
+HC01_VC22:	Estimate;  Average family size	
+HC01_VC76:	Estimate; SCHOOL ENROLLMENT - Population 3 years and over enrolled in school	
+HC01_VC85:	Estimate; EDUCATIONAL ATTAINMENT - Population 25 years and over	
+HC01_VC88:	Estimate; EDUCATIONAL ATTAINMENT - Population 25 years and over - High school graduate
+HC01_VC89:	Estimate; EDUCATIONAL ATTAINMENT - Population 25 years and over - Some college, no degree
+HC01_VC90:	Estimate; EDUCATIONAL ATTAINMENT - Population 25 years and over - Associate's degree
+HC01_VC91:	Estimate; EDUCATIONAL ATTAINMENT - Population 25 years and over - Bachelor's degree
+HC01_VC92:	Estimate; EDUCATIONAL ATTAINMENT - Population 25 years and over - Graduate or professional degree
+HC01_VC95:	Estimate; EDUCATIONAL ATTAINMENT - Percent high school graduate or higher	
+HC01_VC96:  Estimate; EDUCATIONAL ATTAINMENT - Percent bachelor's degree or higher
+HC01_VC136:	Estimate; PLACE OF BIRTH - Total population - Foreign born
+HC01_VC140:	Estimate; U.S. CITIZENSHIP STATUS - Foreign-born population	
+HC01_VC141:	Estimate; U.S. CITIZENSHIP STATUS - Foreign-born population - Naturalized U.S. citizen								
+```{r}
+vars <- c("HC01_VC03","HC01_VC04","HC01_VC06" , "HC01_VC08",  "HC01_VC10",  "HC01_VC12",  "HC01_VC13", 
+"HC01_VC21",  "HC01_VC22",  "HC01_VC76",  "HC01_VC85",  "HC01_VC88",  "HC01_VC89",  "HC01_VC90", 
+"HC01_VC91",  "HC01_VC92",  "HC01_VC95",  "HC01_VC96",  "HC01_VC136", "HC01_VC140", "HC01_VC141")
+
+familyEduDS <- originDS[-1,vars]
+
+columnNames <- c("tot_hh","fam_hh","married_couple" , "husband_only",  "wife_only",  "non_fam_hh",  "non_fam_alone", "avg_hh_size",  "avg_fam_size",  "sch_enrollment",  "edu_attainment",  "high_sch_grad",  "some college",  "associate_deg", "bachelor_deg",  "graduate_prof",  "percent_highsch",  "percent_bachelor",  "tot_foreign_born", "citizen_foreign", "natur_citizen")
+
+colnames(familyEduDS) <- columnNames
+
+
+
+```
+
+some statistics:
+```{r}
+describe(as.numeric(familyEduDS$married_couple))
+```
+
+
+
+
+
+
+
+
 
