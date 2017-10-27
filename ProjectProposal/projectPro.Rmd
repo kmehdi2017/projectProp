@@ -15,6 +15,7 @@ suppressMessages(suppressWarnings(library(dplyr)))
 suppressMessages(suppressWarnings(library(stringr))) 
 suppressMessages(suppressWarnings(library(DATA606))) 
 suppressMessages(suppressWarnings(library(psych)))
+suppressMessages(suppressWarnings(library(ggplot2)))
 ```
 
 #data: 
@@ -49,25 +50,57 @@ HC01_VC136:	Estimate; PLACE OF BIRTH - Total population - Foreign born
 HC01_VC140:	Estimate; U.S. CITIZENSHIP STATUS - Foreign-born population	
 HC01_VC141:	Estimate; U.S. CITIZENSHIP STATUS - Foreign-born population - Naturalized U.S. citizen								
 ```{r}
-vars <- c("HC01_VC03","HC01_VC04","HC01_VC06" , "HC01_VC08",  "HC01_VC10",  "HC01_VC12",  "HC01_VC13", 
-"HC01_VC21",  "HC01_VC22",  "HC01_VC76",  "HC01_VC85",  "HC01_VC88",  "HC01_VC89",  "HC01_VC90", 
+head(originDS)
+
+vars <- c("GEO.display.label","HC01_VC03","HC01_VC04","HC01_VC06" , "HC01_VC08",  "HC01_VC10",  "HC01_VC12",  "HC01_VC13", "HC01_VC21",  "HC01_VC22",  "HC01_VC76",  "HC01_VC85",  "HC01_VC88",  "HC01_VC89",  "HC01_VC90", 
 "HC01_VC91",  "HC01_VC92",  "HC01_VC95",  "HC01_VC96",  "HC01_VC136", "HC01_VC140", "HC01_VC141")
 
 familyEduDS <- originDS[-1,vars]
 
-columnNames <- c("tot_hh","fam_hh","married_couple" , "husband_only",  "wife_only",  "non_fam_hh",  "non_fam_alone", "avg_hh_size",  "avg_fam_size",  "sch_enrollment",  "edu_attainment",  "high_sch_grad",  "some college",  "associate_deg", "bachelor_deg",  "graduate_prof",  "percent_highsch",  "percent_bachelor",  "tot_foreign_born", "citizen_foreign", "natur_citizen")
+
+```
+
+providing meaningful names to columns:
+```{r}
+
+columnNames <- c("states","tot_hh","fam_hh","married_couple" , "husband_only",  "wife_only",  "non_fam_hh",  "non_fam_alone", "avg_hh_size",  "avg_fam_size",  "sch_enrollment",  "edu_attainment",  "high_sch_grad",  "some college",  "associate_deg", "bachelor_deg",  "graduate_prof",  "percent_highsch",  "percent_bachelor",  "tot_foreign_born", "citizen_foreign", "natur_citizen")
 
 colnames(familyEduDS) <- columnNames
 
+```
 
+converting  column type to numeric for columns holding numbers:
+```{r}
+
+
+familyEduDS[2:22] <- sapply(familyEduDS[2:22],as.numeric)
+
+```
+
+calucalating mean of some variable:
+```{r}
+mean_tot_hh <- mean(familyEduDS$tot_hh)
+mean_fam_hh <- mean (familyEduDS$fam_hh)
+mean_couple <- mean(familyEduDS$married_couple)
+mean_husband_only <- mean(familyEduDS$husband_only)
+mean_wife_only <- mean(familyEduDS$wife_only)
+mean_high_school <- mean(familyEduDS$high_sch_grad)
+mean_bachelor <-  mean(familyEduDS$bachelor_deg)
 
 ```
 
 some statistics:
 ```{r}
-describe(as.numeric(familyEduDS$married_couple))
+describe(familyEduDS$married_couple)
+
+describe(familyEduDS$bachelor_deg)
+
 ```
 
+Histograms:
+```{r}
+ggplot(familyEduDS, aes(X=familyEduDS$married_couple))+geom_histogram()
+```
 
 
 
