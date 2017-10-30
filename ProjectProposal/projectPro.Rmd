@@ -77,7 +77,7 @@ familyEduDS[2:22] <- sapply(familyEduDS[2:22],as.numeric)
 
 ```
 
-calucalating mean of some variable:
+calucalating average values of some variables:
 ```{r}
 mean_tot_hh <- mean(familyEduDS$tot_hh)
 mean_fam_hh <- mean (familyEduDS$fam_hh)
@@ -89,6 +89,23 @@ mean_bachelor <-  mean(familyEduDS$bachelor_deg)
 
 ```
 
+ratio of education and family types
+```{r}
+percent_HS_couple <- familyEduDS$high_sch_grad/familyEduDS$married_couple
+percent_HS_husband_Only <- familyEduDS$high_sch_grad/familyEduDS$husband_only
+percent_HS_wife_Only <- familyEduDS$high_sch_grad/familyEduDS$wife_only
+
+percent_BA_couple <- familyEduDS$bachelor_deg/familyEduDS$married_couple
+percent_BA_husband_Only <- familyEduDS$bachelor_deg/familyEduDS$husband_only
+percent_BA_wife_Only <- familyEduDS$bachelor_deg/familyEduDS$wife_only
+
+percent_enroll_couple <- familyEduDS$sch_enrollment/familyEduDS$married_couple
+percent_enroll_husband_Only <- familyEduDS$sch_enrollment/familyEduDS$husband_only
+percent_enroll_wife_Only <- familyEduDS$sch_enrollment/familyEduDS$wife_only
+
+```
+
+
 some statistics:
 ```{r}
 describe(familyEduDS$married_couple)
@@ -99,13 +116,20 @@ describe(familyEduDS$bachelor_deg)
 
 Histograms:
 ```{r}
-ggplot(familyEduDS, aes(X=familyEduDS$married_couple))+geom_histogram()
+ggplot(data.frame(percent_HS_couple), aes(x=percent_HS_couple, count(percent_HS_couple)))+geom_line()
+stat_bin(60)
+qplot(percent_HS_couple, geom="histogram") 
 ```
 
 
 
 
 
+```{r}
+
+qplot(percent_HS_husband_Only, geom="histogram") 
+
+```
 
 
 

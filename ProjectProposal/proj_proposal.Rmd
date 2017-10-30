@@ -1,0 +1,162 @@
+---
+title: "project proposal"
+author: "Mehdi Khan"
+date: "October 25, 2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=65),tidy=TRUE)
+```
+
+load libraries:
+```{r}
+suppressMessages(suppressWarnings(library(dplyr))) 
+suppressMessages(suppressWarnings(library(stringr))) 
+suppressMessages(suppressWarnings(library(DATA606))) 
+suppressMessages(suppressWarnings(library(psych)))
+suppressMessages(suppressWarnings(library(ggplot2)))
+```
+
+#data prepration: 
+
+Load data:
+```{r}
+originDS <- read.csv("https://raw.githubusercontent.com/kmehdi2017/projectProp/master/ProjectProposal/ACS_15_5YR_DP02_with_ann.csv",sep = ",",stringsAsFactors = FALSE)
+
+head(originDS)
+
+
+```
+
+The original data contains a lot of variable which are not relevant to this study, therefore a subset of the data is extracted. The following are the variables that are selected for the project as described below:
+
+GEO.display.label: Geography
+HC01_VC03	Estimate; HOUSEHOLDS BY TYPE - Total households
+HC01_VC04:	Estimate: Total households - Family households (families)	
+HC01_VC06:	Estimate: Total households - Family households (families) - Married-couple family										
+HC01_VC08:	Estimate: Total households - Family households (families) - Male householder, no wife present	
+HC01_VC10:	Estimate: Total households - Family households (families) - Female householder, no husband present 
+HC01_VC76:	Estimate: SCHOOL ENROLLMENT - Population 3 years and over enrolled in school
+HC01_VC88:	Estimate: EDUCATIONAL ATTAINMENT - Population 25 years and over - High school graduate
+HC03_VC88:	Percent:  EDUCATIONAL ATTAINMENT - Population 25 years and over - High school graduate 
+HC01_VC91:	Estimate: EDUCATIONAL ATTAINMENT - Population 25 years and over - Bachelor's degree
+HC03_VC91:	Percent; EDUCATIONAL ATTAINMENT - Population 25 years and over - Bachelor's degree
+
+ 								
+```{r}
+
+
+vars <- c("GEO.display.label","HC01_VC03","HC01_VC04","HC01_VC06" , "HC01_VC08",  "HC01_VC10",   "HC01_VC76", "HC01_VC88","HC03_VC88", "HC01_VC91","HC03_VC91")
+
+familyEduDS <- originDS[-1,vars]
+
+head(familyEduDS)
+
+```
+
+providing meaningful names to columns:
+```{r}
+
+columnNames <- c("states","total_house_hold","total_family","married_couple_family" , "husband_only_family",  "wife_only_family",   "school_enrollment", "high_school_grad", "percent_high_school", "bachelor_deg_holder","percent_bachelor")
+
+colnames(familyEduDS) <- columnNames
+
+head(familyEduDS)
+
+```
+
+converting  column type to numeric for columns holding numbers:
+```{r}
+
+familyEduDS[2:11] <- sapply(familyEduDS[2:11],as.numeric)
+
+```
+
+
+Calculate percentage of types of families in relation to total numaber of families:
+```{r}
+percent_married_couple <- familyEduDS$married_couple_family/familyEduDS$total_house_hold
+percent_husband_only <- familyEduDS$husband_only_family/familyEduDS$total_house_hold
+percent_wife_only <- familyEduDS$wife_only_family/familyEduDS$total_house_hold
+
+```
+
+## Research question
+Does larger number of married couple families cause larger number of educated population compared to the number of families of single parents?
+
+## case
+Each case represents a state in the United States, there are 51 of them. 
+
+## Data collection
+The  data represents selected social chracterstics in the United States in the period of 5 years from  2011 to 2015 and compiled by American Community Survey,US Census Bureau, the premier source for detailed information about the American people and workforce.
+
+The data was published by US Census Bureau and posted in American Fact Finder website: https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_15_5YR_DP02&src=pt
+ 
+
+
+## Type of study
+This is an observational study
+
+## Data Source
+The data was published by US Census Bureau and posted in American Fact Finder website: https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_15_5YR_DP02&src=pt
+
+##Response
+he response variables are the estimates of school enrollment, high school gradutes and bachelor degree and they are numerical.
+
+##Explanatory
+The explanatory variables are the estimates of family types and are numerical.
+
+
+## Relevant summary statistics
+```{r}
+describe(percent_married_couple)
+
+```
+
+```{r}
+describe(percent_husband_only)
+
+```
+
+```{r}
+describe(percent_wife_only)
+
+```
+
+```{r}
+describe(familyEduDS$school_enrollment)
+
+```
+
+```{r}
+describe(familyEduDS$high_school_grad)
+
+```
+
+
+```{r}
+describe(familyEduDS$bachelor_deg_holder)
+
+```
+
+```{r}
+describe(familyEduDS$percent_high_school)
+
+```
+
+```{r}
+describe(familyEduDS$percent_bachelor)
+
+```
+
+```{r}
+qplot(percent_married_couple, geom="histogram") 
+```
+
+
+
+
+
